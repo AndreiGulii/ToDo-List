@@ -6,26 +6,22 @@ const tasks = [
     id: 1,
     task: "Task to do",
   },
-  {
-    id: 2,
-    task: "Task to do",
-  },
 ];
 
 const Task = ({ task, handleEditTask, handleDeleteTask, index }) => {
   const [isEdit, setIsEdit] = React.useState(false);
-  
+
   const taskRef = React.useRef();
 
   const handleClickSave = () => {
     handleEditTask(index, taskRef.current.value);
     setIsEdit(false);
-  }
+  };
 
   return isEdit ? (
     <div className="input-group">
       <input
-        className="form-control"
+        className="form-control ms-3"
         ref={taskRef}
         type="text"
         defaultValue={task}
@@ -36,11 +32,11 @@ const Task = ({ task, handleEditTask, handleDeleteTask, index }) => {
     </div>
   ) : (
     <>
-      <p>{task}</p>
-      <button onClick={() => setIsEdit(true)} className="btn btn-warning">
+      <p className="mt-3 ms-3">{task}</p>
+      <button onClick={() => setIsEdit(true)} className="btn btn-warning ms-3">
         Edit
       </button>
-      <button onClick={handleDeleteTask} className="btn btn-danger">
+      <button onClick={handleDeleteTask} className="btn btn-danger ms-3">
         Delete
       </button>
     </>
@@ -52,14 +48,20 @@ const TaskList = () => {
   const handleEditTask = (index, newTask) => {
     const copyListOfTasks = [...listOfTasks];
 
-
     copyListOfTasks[index].task = newTask;
-   
+
     setListOfTasks(copyListOfTasks);
-  }
+  };
   const handleDeleteTask = (index) => {
     setListOfTasks(listOfTasks.filter((_, ind) => ind != index));
-  }
+  };
+  const handleAddTask = () => {
+    const newTask = {
+      id: listOfTasks.length,
+      task: "New Task",
+    };
+    setListOfTasks([...listOfTasks, newTask]);
+  };
 
   return (
     <>
@@ -72,8 +74,16 @@ const TaskList = () => {
           index={index}
         />
       ))}
+      <div>
+        <button
+          onClick={handleAddTask}
+          className="btn btn-primary btn-lg mt-3 ms-3"
+        >
+          Add Task
+        </button>
+      </div>
     </>
-  )
-}
+  );
+};
 
-root.render(<TaskList/>);
+root.render(<TaskList />);
