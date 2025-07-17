@@ -3,4 +3,7 @@
 }
 p{
     background-color: gainsboro;
+ width: 250px;
+ border-radius: 6px;
+ padding-left: 10px; 
 }
