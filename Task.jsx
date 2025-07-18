@@ -5,27 +5,34 @@ const tasks = [
   {
     id: 1,
     task: "Task to do",
+    date: "18.07.2025",
+    info: "Info "
   },
 ];
 
-const Task = ({ task, handleEditTask, handleDeleteTask, index }) => {
+const Task = ({ task, date, info, handleEditTask, handleDeleteTask, index }) => {
   const [isEdit, setIsEdit] = React.useState(false);
 
   const taskRef = React.useRef();
+  const dateRef = React.useRef();
+  const infoRef = React.useRef();
 
   const handleClickSave = () => {
-    handleEditTask(index, taskRef.current.value);
+    handleEditTask(index, taskRef.current.value, dateRef.current.value, infoRef.current.value);
     setIsEdit(false);
   };
 
   return isEdit ? (
     <div className="input-group">
       <input
-        className="form-control ms-3"
+        className="ms-3"
         ref={taskRef}
         type="text"
         defaultValue={task}
       />
+      <input ref={dateRef} type="text" defaultValue={date} />
+      <input ref={infoRef} type="text" defaultValue={info} />
+      
       <button onClick={handleClickSave} className="btn btn-success">
         Save
       </button>
@@ -33,6 +40,8 @@ const Task = ({ task, handleEditTask, handleDeleteTask, index }) => {
   ) : (
     <>
       <p className="mt-3 ms-3">{task}</p>
+      <p className="mt-3 ms-3">{date}</p>
+      <p className="mt-3 ms-3">{info}</p>
       <button onClick={() => setIsEdit(true)} className="btn btn-warning ms-3">
         Edit
       </button>
@@ -45,10 +54,12 @@ const Task = ({ task, handleEditTask, handleDeleteTask, index }) => {
 
 const TaskList = () => {
   const [listOfTasks, setListOfTasks] = React.useState(tasks);
-  const handleEditTask = (index, newTask) => {
+  const handleEditTask = (index, newTask, newDate, newInfo) => {
     const copyListOfTasks = [...listOfTasks];
 
     copyListOfTasks[index].task = newTask;
+    copyListOfTasks[index].date = newDate;
+    copyListOfTasks[index].info = newInfo
 
     setListOfTasks(copyListOfTasks);
   };
@@ -59,16 +70,20 @@ const TaskList = () => {
     const newTask = {
       id: listOfTasks.length,
       task: "New Task",
+      date: "New Date",
+      info: "New Info",
     };
-    setListOfTasks([...listOfTasks, newTask]);
+    setListOfTasks([...listOfTasks, newTask, newDate, newInfo]);
   };
 
   return (
     <>
-      {listOfTasks.map(({ id, task }, index) => (
+      {listOfTasks.map(({ id, task, date, info }, index) => (
         <Task
           key={id}
           task={task}
+          date={date}
+          info={info}
           handleEditTask={handleEditTask}
           handleDeleteTask={() => handleDeleteTask(index)}
           index={index}
